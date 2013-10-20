@@ -1,0 +1,4 @@
+id#filename#content#title#layout#description#thumbimg#categories#tags#createdate#moddate#
+inc#str#str#str#str#str#str#str#str#str#str#
+1#filename#content#title#layout#description#thumbimg#categories#tags#createdate#moddate#
+2#2013-10-19-52624a6a6e971.html#<p><a href="http://fakelocalhost/assert/img/2013-10-20-526335f9e6565.png"><img title="Capture" style="border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px; display: inline" border="0" alt="Capture" src="http://fakelocalhost/assert/img/2013-10-20-526335f9eeacb.png" width="244" height="196"></a> 哈哈哈34</p>#哈哈2#postlayout#description#thumbimg#[web-build]#tags#2013-10-19 17:01:30#2013-10-20 09:46:34#
