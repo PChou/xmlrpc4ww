@@ -196,6 +196,45 @@
         }
     }
 
+    //param0:string blogid
+    //param1:string username
+    //param2:string password
+    //param3:int numberOfPosts
+
+    //return
+    //array 
+    // struct post
+        //string title
+        //string description
+        //array categories
+    function getRecentPosts($msg){
+        $top = $msg->getParam(3)->scalarval();
+        $sql = "select id,title,content from blogs order by createdate desc limit $top";
+        $db = new Database('blog');
+        $rs = $db->executeQuery($sql);
+        $arr = array();
+        while($rs->next()){
+            list($id,$title,$content) = $rs->getCurrentValues();
+            $x = new xmlrpcval(
+                array(
+                    'title' => new xmlrpcval($title,'string'),
+                    'description' => new xmlrpcval($content,'string'),
+                    'categories' => new xmlrpcval(array(),'array'),
+                    'postid' => new xmlrpcval($id,'string')
+                    )
+                ,'struct');
+            array_push($arr,$x);
+        }
+
+        $err = txtdbapi_get_last_error();
+        if($err != null){
+            return new xmlrpcresp(0,-1,$err);
+        }
+        else{
+            return new xmlrpcresp(new xmlrpcval($arr,'array'));
+        }
+    }
+
     $dispatch = array(
     	'blogger.getUsersBlogs' =>  array(
     		'function' => 'getUsersBlogs'
@@ -215,6 +254,10 @@
         ,'metaWeblog.newMediaObject' => 
         array(
             'function' => 'newMediaObject'
+            )
+        ,'metaWeblog.getRecentPosts' =>
+        array(
+            'function' => 'getRecentPosts'
             )
     	);
 
