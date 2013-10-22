@@ -70,20 +70,27 @@
 ?>
 
 <html>
+	<head>
+		<script type="text/javascript" src="content/jquery.js"></script>
+		<link type="text/css" rel="stylesheet" href="content/bootstrap3.css">
+	</head>
 	<meta charset='UTF-8'>
 	<body>
+		<div class='container'>
 		<form method='post'>
 			<table>
 				<tr><td>文件名</td><td><input tyep='text' name='filename' value=<?php echo $filename; ?> /></td></tr>
 				<tr><td>标题</td><td><input tyep='text' name='title' readonly value=<?php echo $title; ?> /></td></tr>
 				<tr><td>layout</td><td><input tyep='text' name='layout' value=<?php echo $layout; ?> /></td></tr>
-				<tr><td>简述</td><td><input tyep='text' name='description' value=<?php echo $description; ?> /></td></tr>
+				<tr><td>简述</td><td><textarea tyep='text' name='description' row='10'><?php echo $description; ?></textarea></td></tr>
 				<tr><td>指纹图片</td><td><input tyep='text' name='thumbimg' value=<?php echo $thumbimg; ?> /></td></tr>
 				<tr><td>分类</td><td><input tyep='text' name='categories' value=<?php echo $categories; ?> /></td></tr>
 				<tr><td>标签</td><td><input tyep='text' name='tags' value=<?php echo $tags; ?> /></td></tr>
 				<tr><td><input type='submit' value='保存并生成'/></td></tr>
 			</table>
 		</form>
-		<?php echo $err; ?>
+		<pre><?php echo $err; ?></pre>
+		</div>
+		<script src="content/bootstrap3.js"></script>
 	</body>
 </html>

@@ -52,10 +52,12 @@
 <html>
 <head>
 	<meta charset='utf-8'/>
+	<script type="text/javascript" src="content/jquery.js"></script>
+	<link type="text/css" rel="stylesheet" href="content/bootstrap3.css">
 </head>
 <body>
+	<div class='container'>
 	<pre><?php echo $err; ?></pre>
-
 	<form method='post'>
 		<table>
 			<tr>
@@ -71,5 +73,7 @@
 			</tr>
 		</table>
 	</form>
+	</div>
+	<script src="content/bootstrap3.js"></script>
 </body>
 </html>
