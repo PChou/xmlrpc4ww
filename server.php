@@ -102,6 +102,7 @@
                                 'title' => new xmlrpcval($title,'string')
                                 ,'description' => new xmlrpcval($content,'string')
                                 ,'categories' => new xmlrpcval(array(),'array')
+                                ,'postid' => new xmlrpcval($id,'int')
                             ),
                             'struct')
                     );
