@@ -1,6 +1,7 @@
 <?php
     include_once("txtdb/txt-db-api.php");
     include_once('util2.php');
+    include_once('config.php');
 
     $id=$_GET['id'];
     $db = new Database('blog');
@@ -26,33 +27,21 @@
         }
 
         if($err == null){
-	        $rs = $db->executeQuery("select count(*) as count from localgit");
-	        $rs->next();
-	        list($count)=$rs->getCurrentValues();
-	        if($count > 0){
-	            $rs = $db->executeQuery("select localpath from localgit");
-	            $rs->next();
-	            list($localpath)=$rs->getCurrentValues();
-	            if(!is_dir($localpath)){
-	                $err = "$localpath is not a valid path.";
-	            }
-	            else{
-	                $filepath = filePathCombine(filePathCombine($localpath,'_posts'),$filename);
-	                $content2 = "---\n";
-	                $content2 = $content2 . 'layout: ' . $layout . "\n";
-	                $content2 = $content2 . 'title: ' . $title . "\n";
-	                $content2 = $content2 . 'description: ' . $description . "\n";
-	                $content2 = $content2 . 'thumbimg: ' . $thumbimg . "\n";
-	                $content2 = $content2 . 'categories: ' . $categories . "\n";
-	                $content2 = $content2 . 'tags: ' . $tags . "\n";
-	                $content2 = $content2 . "---\n";
-	                $content2 = $content2 . str_replace(BLOGURL,'{{ site.baseurl }}',$content);
-	                //save file
-	                saveFile(
-	                    $filepath
-	                    ,$content2);
-	            }
-	        }
+	        
+            $filepath = filePathCombine(filePathCombine(LOCALPATH,'_posts'),$filename);
+            $content2 = "---\n";
+            $content2 = $content2 . 'layout: ' . $layout . "\n";
+            $content2 = $content2 . 'title: ' . $title . "\n";
+            $content2 = $content2 . 'description: ' . $description . "\n";
+            $content2 = $content2 . 'thumbimg: ' . $thumbimg . "\n";
+            $content2 = $content2 . 'categories: ' . $categories . "\n";
+            $content2 = $content2 . 'tags: ' . $tags . "\n";
+            $content2 = $content2 . "---\n";
+            $content2 = $content2 . str_replace(BLOGURL,'{{ site.baseurl }}',$content);
+            //save file
+            saveFile(
+                $filepath
+                ,$content2);	        
     	}
 
         if($err == null)
@@ -71,7 +60,6 @@
 
 <html>
 	<head>
-		<script type="text/javascript" src="content/jquery.js"></script>
 		<link type="text/css" rel="stylesheet" href="content/bootstrap3.css">
 	</head>
 	<meta charset='UTF-8'>
@@ -91,6 +79,7 @@
 		</form>
 		<pre><?php echo $err; ?></pre>
 		</div>
+		<script type="text/javascript" src="content/jquery.js"></script>
 		<script src="content/bootstrap3.js"></script>
 	</body>
 </html>

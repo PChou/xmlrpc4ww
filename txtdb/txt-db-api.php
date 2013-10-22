@@ -47,8 +47,7 @@ $API_HOME_DIR="";
 // e.g. if you have a Database in Directory /home/website/test/TestDB
 // you must set this property to /home/website/test/ 		
 
-$DB_DIR="/var/www/html/xmlrpc4ww/db/";			
-//$DB_DIR="D:\\Temp\\iwebsns1.1.0\\iwebsns\\xmlrpc\\db\\";
+//$DB_DIR="/var/www/html/xmlrpc4ww/db/";			
 //$DB_DIR="c:\\programme\\apache\\htdocs\\php-api-tests\\";			
 
 

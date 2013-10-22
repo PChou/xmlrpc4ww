@@ -1,6 +1,6 @@
 <?php
 	date_default_timezone_set("PRC");
-	define("BLOGURL","http://fakelocalhost");
+
 
 	function Escape($str){
 		return str_replace(

@@ -3,6 +3,7 @@
     include_once("xmlrpc/xmlrpcs.inc");
     include_once("txtdb/txt-db-api.php");
     include_once('util2.php');
+    include_once('config.php');
     
 
     //param0:string appkey
@@ -15,9 +16,9 @@
             //struct
             new xmlrpcval(
                 array(
-                'blogid' => new xmlrpcval('67322')
+                'blogid' => new xmlrpcval(BLOGID)
                 , 'url' => new xmlrpcval(BLOGURL)
-                , 'blogName' => new xmlrpcval('ghpage')
+                , 'blogName' => new xmlrpcval(BLOGNAME)
             ),'struct')
         );
 
@@ -40,30 +41,14 @@
         $db = new Database('blog');
         $title = Escape($msg->getParam(3)->structMem('title')->scalarVal());
         $content = Escape($msg->getParam(3)->structMem('description')->scalarVal());
-        //$content2 = Escape($msg->getParam(3)->structMem('description')->scalarVal());
         $createdate = date("Y-m-d H:i:s");
         $moddate = date("Y-m-d H:i:s");
-
         //filename format is yyyy-mm-dd-XXXXXX.html
         $filename = date('Y-m-d-') . uniqid() . '.html';
-        //check git local path config and save the file into it
-        $rs = $db->executeQuery("select count(*) as count from localgit");
-        $rs->next();
-        list($count)=$rs->getCurrentValues();
-        if($count > 0){
-            $rs = $db->executeQuery("select localpath,layout from localgit");
-            $rs->next();
-            list($localpath,$layout)=$rs->getCurrentValues();
-            if(!is_dir($localpath)){
-                $err = "$localpath is not a valid path.";
-            }
-            else{
-                $sql = "insert into blogs (title,filename,content,layout,createdate,moddate) values('$title','$filename','$content','$layout','$createdate','$moddate')";
-                $db->executeQuery($sql);
-            }
-        }
-        
-        
+        $layout = DEFAULT_LAYOUT;
+        $sql = "insert into blogs (title,filename,content,layout,createdate,moddate) values('$title','$filename','$content','$layout','$createdate','$moddate')";
+        $db->executeQuery($sql);
+
         $err = txtdbapi_get_last_error();
         if($err == null){
             $id = $db->getLastInsertId();
@@ -107,7 +92,6 @@
                             'struct')
                     );
         }
-
         
         if($err != null){
             return new xmlrpcresp(0,-1,$err);
@@ -166,31 +150,25 @@
             $db = new Database('blog');
             $filename = date("Y-m-d-") . uniqid() . '.' . substr($type,strpos($type,'/')+1);
             $byte = $msg->getParam(3)->structMem('bits')->scalarval();
-            $rs = $db->executeQuery("select count(*) as count from localgit");
-            $rs->next();
-            list($count)=$rs->getCurrentValues();
-            if($count > 0){
-                $rs = $db->executeQuery("select localpath from localgit");
-                $rs->next();
-                list($localpath)=$rs->getCurrentValues();
-                if(!is_dir($localpath)){
-                    $err = "$localpath is not a valid path.";
-                }
-                else{
-                    $filepath = filePathCombine(filePathCombine($localpath,'assert\img'),$filename);
-                    $file = fopen($filepath,"x+");
-                    fwrite($file,$byte);
-                    fclose($file);
-
-                    return new xmlrpcresp(
-                        new xmlrpcval(array(
-                                'url' => new xmlrpcval('/assert/img/' . $filename,'string')
-                            ),
-                            'struct')
-                    );
-                }
+         
+            $filepath = filePathCombine(LOCALPATH,IMGPATH);
+            if(!is_dir($filepath)){
+                $err = "$filepath is not a valid path.";
             }
-            
+            else{
+                $filepath = filePathCombine($filepath,$filename);
+                $file = fopen($filepath,"x+");
+                fwrite($file,$byte);
+                fclose($file);
+
+                return new xmlrpcresp(
+                    new xmlrpcval(array(
+                            'url' => new xmlrpcval(IMGPATH2 . $filename,'string')
+                        ),
+                        'struct')
+                );
+            }
+        
             if($err != null){
                 return new xmlrpcresp(0,-1,$err);
             }
