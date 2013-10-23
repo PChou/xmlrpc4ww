@@ -3,12 +3,19 @@
 
 
 	function Escape($str){
-		return str_replace(
-			'#','%h',str_replace(
-				'%', '%p', str_replace(
-						'"', '\"', str_replace(
-							"'","\'",str_replace(
-								'\\', '\\\\', $str)))));
+		$s = str_replace('\\', '\\\\', $str);
+		$s = str_replace("'","\'", $s);
+		// You ONLY have to bother about the # and % characters if you enter the data manually into the text file. 
+		// CREATE TABLE and all other SQL Statements will handle this automatically for you. 
+		// $s = str_replace('%', '%p', $s);
+		// $s = str_replace('#','%h', $s);
+		return $s;
+		// return str_replace(
+		// 	'#','%h',str_replace(
+		// 		'%', '%p', str_replace(
+		// 				'"', '\"', str_replace(
+		// 					"'","\'",str_replace(
+		// 						'\\', '\\\\', $str)))));
 	}
 
 	function saveFile($fileName, $text) {
